@@ -1,0 +1,208 @@
+function enter(){
+
+    let name=document.getElementById("name").value.trim();
+
+    if(!name){
+        alert("Upiši ime");
+        return;
+    }
+
+    document.getElementById("login").style.display="none";
+    document.getElementById("app").style.display="block";
+
+    document.getElementById("welcome").innerText =
+        "Bok " + name + " 👋";
+
+    setMood("happy");
+}
+
+const moods={
+
+    happy:{
+        emoji:"😄",
+        color:"linear-gradient(135deg,#f6d365,#fda085)"
+    },
+
+    sad:{
+        emoji:"😢",
+        color:"linear-gradient(135deg,#4facfe,#00f2fe)"
+    },
+
+    energy:{
+        emoji:"⚡",
+        color:"linear-gradient(135deg,#f7971e,#ffd200)"
+    },
+
+    angry:{
+        emoji:"😡",
+        color:"linear-gradient(135deg,#ff416c,#ff4b2b)"
+    },
+
+    chill:{
+        emoji:"😌",
+        color:"linear-gradient(135deg,#11998e,#38ef7d)"
+    }
+
+};
+
+function setMood(m){
+
+    document.body.className=m;
+    document.body.style.background=moods[m].color;
+
+    let big=document.getElementById("bigEmoji");
+
+    big.innerText=moods[m].emoji;
+
+    playEffects(m);
+
+    localStorage.setItem("lastMood",m);
+}
+
+function playEffects(m){
+
+    let config={
+
+        happy:{
+            emojis:["🎉","🥳","💛","✨"],
+            anim:"burst"
+        },
+
+        sad:{
+            emojis:["💧","🌧️","😢"],
+            anim:"fall"
+        },
+
+        energy:{
+            emojis:["⚡","🔥","💥"],
+            anim:"shake"
+        },
+
+        angry:{
+            emojis:["😡","💢","💥"],
+            anim:"shake"
+        },
+
+        chill:{
+            emojis:["🧘","🌿","💫"],
+            anim:"floatUp"
+        }
+
+    };
+
+    let data=config[m];
+
+    for(let i=0;i<25;i++){
+
+        let e=document.createElement("div");
+
+        e.className="effect";
+
+        e.innerText=
+            data.emojis[
+                Math.floor(Math.random()*data.emojis.length)
+            ];
+
+        e.style.left=Math.random()*100+"%";
+        e.style.top=Math.random()*100+"%";
+        e.style.fontSize=(20+Math.random()*35)+"px";
+
+        e.style.animation=data.anim+" 1s ease";
+
+        document.body.appendChild(e);
+
+        setTimeout(()=>e.remove(),1000);
+    }
+}
+
+function detectMoodFromText(t){
+
+    t=t.toLowerCase();
+
+    if(
+        t.includes("tuž") ||
+        t.includes("tuz") ||
+        t.includes("plačem") ||
+        t.includes("placem")
+    ){
+        return "sad";
+    }
+
+    if(
+        t.includes("sretan") ||
+        t.includes("super") ||
+        t.includes("odlično")
+    ){
+        return "happy";
+    }
+
+    if(
+        t.includes("energ") ||
+        t.includes("motiv") ||
+        t.includes("idemo")
+    ){
+        return "energy";
+    }
+
+    if(
+        t.includes("ljut") ||
+        t.includes("mrzim") ||
+        t.includes("bijesan")
+    ){
+        return "angry";
+    }
+
+    if(
+        t.includes("smiren") ||
+        t.includes("mir") ||
+        t.includes("relax")
+    ){
+        return "chill";
+    }
+
+    return "";
+}
+
+function react(){
+
+    let text=document.getElementById("text").value;
+
+    let mood=detectMoodFromText(text);
+
+    if(mood){
+        setMood(mood);
+    }else{
+        alert("Nisam prepoznao emociju 😅");
+    }
+
+    document.getElementById("text").value="";
+}
+
+let saved=localStorage.getItem("lastMood");
+
+if(saved && moods[saved]){
+    setMood(saved);
+}
+
+const emojis=[
+    "😄","😂","😍","🥳",
+    "😎","💛","✨","🔥",
+    "🌈","💫"
+];
+
+for(let i=0;i<60;i++){
+
+    let e=document.createElement("div");
+
+    e.className="emoji";
+
+    e.innerText=
+        emojis[Math.floor(Math.random()*emojis.length)];
+
+    e.style.left=Math.random()*100+"%";
+    e.style.top=Math.random()*100+"%";
+    e.style.fontSize=(15+Math.random()*40)+"px";
+    e.style.animationDuration=(4+Math.random()*10)+"s";
+
+    document.getElementById("login").appendChild(e);
+}

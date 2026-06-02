@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mood Board</title>
+    <link rel="stylesheet" href="emocije.css">
+</head>
+
+<body class="default">
+
+    <h1>🎭 Mood Board</h1>
+    <p>Kako se osjećaš danas?</p>
+
+    <div class="container">
+        <button onclick="setMood('stress')">Stress 😣</button>
+        <button onclick="setMood('chill')">Chill 😌</button>
+        <button onclick="setMood('energy')">Energy ⚡</button>
+    </div>
+
+    <div id="message">Odaberi raspoloženje</div>
+
+    <script src="emocije.js"></script>
+	
+	<div class="input-section">
+    <textarea id="userInput" placeholder="Napiši kako se osjećaš..."></textarea>
+    <br>
+    <button onclick="analyzeMood()">Pošalji</button>
+</div>
+
+<div id="response"></div>
+<div id="sun"></div>
+</body>
+</html>
